@@ -2,7 +2,7 @@ public class RetreatState : BaseState
 {
     public void EnterState(Enemy enemy)
     {
-
+        enemy.Animator.SetTrigger(EnemyConstants.RETREATSTATE);
     }
 
     public void UpdateState(Enemy enemy)

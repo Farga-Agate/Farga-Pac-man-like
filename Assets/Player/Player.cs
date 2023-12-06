@@ -1,15 +1,24 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private Transform camera;
+
+    [Header("Player Properties")]
     [SerializeField] private float powerUpDuration;
+    [SerializeField] private Transform respawnPoint;
+    [SerializeField] private int health;
+
+    [Header("UI")]
+    [SerializeField] private TMP_Text healthText;
+
     private Rigidbody _rigidbody;
     private Coroutine _powerUpCoroutine;
-
+    private bool _isPowerUpActive;
     public Action OnPowerUpStart;
     public Action OnPowerUpStop;
     void Awake()
@@ -19,6 +28,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        UpdateUI();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -49,8 +59,40 @@ public class Player : MonoBehaviour
 
     private IEnumerator StartPowerUp()
     {
+        _isPowerUpActive = true;
         OnPowerUpStart?.Invoke();
         yield return new WaitForSeconds(powerUpDuration);
         OnPowerUpStop?.Invoke();
+        _isPowerUpActive = false;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (_isPowerUpActive)
+        {
+            if (other.gameObject.CompareTag("Enemy"))
+            {
+                other.gameObject.GetComponent<Enemy>().Dead();
+            }
+        }
+    }
+
+    private void UpdateUI()
+    {
+        healthText.text = $"Health: {health}";
+    }
+
+    public void Dead()
+    {
+        health--;
+        if (health > 0)
+        {
+            transform.position = respawnPoint.position;
+        }
+        else
+        {
+            health = 0;
+        }
+        UpdateUI();
     }
 }
