@@ -6,6 +6,8 @@ using UnityEngine;
 public class Pickable : MonoBehaviour
 {
     [SerializeField] private PickableType _pickableType;
+    public PickableType PickableType => _pickableType;
+
     public Action<Pickable> OnPicked = null;
     public void OnTriggerEnter(Collider other)
     {
@@ -19,6 +21,6 @@ public class Pickable : MonoBehaviour
 
     private void OnDestroy()
     {
-        
+
     }
 }

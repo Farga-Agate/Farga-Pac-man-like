@@ -2,16 +2,19 @@ public class RetreatState : BaseState
 {
     public void EnterState(Enemy enemy)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public void UpdateState(Enemy enemy)
     {
-        throw new System.NotImplementedException();
+        if (enemy.Player != null)
+        {
+            enemy.NavMeshAgent.destination = enemy.transform.position - enemy.Player.transform.position;
+        }
     }
 
     public void ExitState(Enemy enemy)
     {
-        throw new System.NotImplementedException();
+
     }
 }
