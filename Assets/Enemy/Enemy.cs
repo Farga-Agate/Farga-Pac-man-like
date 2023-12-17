@@ -71,7 +71,7 @@ public class Enemy : MonoBehaviour
     {
         if (_currentState == RetreatState)
             return;
-        
+
         if (other.gameObject.CompareTag("Player"))
         {
             other.gameObject.GetComponent<Player>().Dead();
